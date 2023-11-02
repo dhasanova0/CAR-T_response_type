@@ -9,11 +9,16 @@ library(SeuratDisk)
 library(dplyr)
 library(DoubletFinder)
 
-seurat_obj <- readRDS("/Users/dhasanova/Documents/ETH/HS23/data/output/baseline_filtered.rds")
-baseline_seurat_filtered_remove_rbc <- readRDS("/Users/dhasanova/Documents/ETH/HS23/data/output/baseline_filtered_no_rbc.rds")
+set.seed(12342)
+
+#Define working directory
+wd = "/Users/dhasanova/Documents/ETH/HS23/"
+
+seurat_obj <- readRDS(paste0(wd, "/data/output/baseline_filtered_md_annot.rds"))
+seurat_obj_no_rbc <- readRDS(paste0(wd, "data/output/baseline_filtered_no_rbc_md_annot.rds"))
 
 seurat_obj.split <- SplitObject(seurat_obj, split.by = "orig.ident")
-baseline_seurat_filtered_remove_rbc.split <- SplitObject(baseline_seurat_filtered_remove_rbc, split.by = "orig.ident")
+seurat_obj_no_rbc.split <- SplitObject(seurat_obj_no_rbc, split.by = "orig.ident")
 
 identify_doublets <- function(seurat_object, create_plots, plot_label){
   
@@ -51,8 +56,8 @@ identify_doublets <- function(seurat_object, create_plots, plot_label){
                                               nExp = nExp.poi.adj,
                                               reuse.pANN = FALSE, sct = TRUE)
     
-    colnames(seurat_object[[i]]@meta.data)[10] <- "pANN"
-    colnames(seurat_object[[i]]@meta.data)[11] <- "doublets"
+    colnames(seurat_object[[i]]@meta.data)[ncol(seurat_object[[i]]@meta.data)-1] <- "pANN"
+    colnames(seurat_object[[i]]@meta.data)[ncol(seurat_object[[i]]@meta.data)] <- "doublets"
     
   }
   
@@ -69,7 +74,8 @@ identify_doublets <- function(seurat_object, create_plots, plot_label){
     }
     
   }
-
+  
+  gc()
   baseline_filtered_doublets <- merge(seurat_object[[1]], y = seurat_object[-c(1)], add.cell.ids = ls(seurat_object), project = "baseline")
   baseline_filtered <- subset(baseline_filtered_doublets, subset = doublets == "Singlet")
   
@@ -77,11 +83,17 @@ identify_doublets <- function(seurat_object, create_plots, plot_label){
   
 }
 
-baseline_filtered <- identify_doublets(seurat_obj.split, "", FALSE)
-baseline_filtered_no_rbc <- identify_doublets(baseline_seurat_filtered_remove_rbc.split, "_norbc", FALSE)
 
-saveRDS(baseline_filtered_no_rbc, "/Users/dhasanova/Documents/ETH/HS23/data/output/baseline_doublet_no_rbc_filtered.rds")
-saveRDS(baseline_filtered, "/Users/dhasanova/Documents/ETH/HS23/data/output/baseline_doublet_filtered.rds")
+
+
+baseline_filtered <- identify_doublets(seurat_obj.split, FALSE, "")
+baseline_filtered_no_rbc <- identify_doublets(seurat_obj_no_rbc.split,FALSE,  "_norbc" )
+
+if (file.exists(paste0(wd, "data/output/"))) {cat("The folder already exists")} else {dir.create(output_path)}
+
+saveRDS(baseline_filtered, paste0(wd, "data/output/baseline_doublet_filtered_md_annot.rds"))
+saveRDS(baseline_filtered_no_rbc, paste0(wd, "data/output/baseline_doublet_no_rbc_filtered_md_annot.rds"))
+
 
 # Create visualizations
 #plot1 <- FeatureScatter(baseline_filtered, feature1 = "nCount_RNA", feature2 = "percent.mt")+
