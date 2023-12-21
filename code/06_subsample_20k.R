@@ -86,23 +86,58 @@ subsample_seurat <- function(seurat_object, output_path){
 }
 
 #Define output paths and create if doesn't exist
-output_path1 <- paste0(wd, "data/output/stator_input/rds_new/")
-output_path2 <- paste0(wd, "data/output/stator_input_no_rbc/rds_new/")
+output_path1_baseline <- paste0(wd, "data/output_baseline/stator_input/rds_new/")
+output_path2_baseline <- paste0(wd, "data/output_baseline/stator_input_no_rbc/rds_new/")
+
+output_path_posttreatment <- paste0(wd, "data/output_posttreatment/stator_input/combined/rds/")
+
+output_path_post_axi_D7 <- paste0(wd, "data/output_posttreatment/stator_input/axi_cel/rds_D7/")
+output_path_post_tisa_D7 <- paste0(wd, "data/output_posttreatment/stator_input/tisa_cel/rds_D7/")
+
+output_path_post_axi_D14 <- paste0(wd, "data/output_posttreatment/stator_input/axi_cel/rds_D14/")
+output_path_post_tisa_D14 <- paste0(wd, "data/output_posttreatment/stator_input/tisa_cel/rds_D14/")
 
 if (file.exists(output_path1)) {cat("The folder already exists")} else {dir.create(output_path1)}
 if (file.exists(output_path2)) {cat("The folder already exists")} else {dir.create(output_path2)}
 
+if (file.exists(output_path_posttreatment)) {cat("The folder already exists")} else {dir.create(output_path_posttreatment)}
+if (file.exists(output_path_post_axi)) {cat("The folder already exists")} else {dir.create(output_path_post_axi)}
+if (file.exists(output_path_post_tisa)) {cat("The folder already exists")} else {dir.create(output_path_post_tisa)}
+
+
 #Load data for downsampling and save downsampled files
-seurat_obj <- readRDS(paste0(wd, "data/output/baseline_doublet_filtered_md_annot.rds"))
+seurat_obj <- readRDS(paste0(wd, "data/output_baseline/baseline_doublet_filtered_md_annot.rds"))
 subsample_seurat(seurat_obj, output_path1)
 rm(seurat_obj)
 gc()
 
 #Load data for downsampling and save downsampled files
-seurat_obj_no_rbc <- readRDS(paste0(wd, "data/output/baseline_doublet_no_rbc_filtered_annot_md.rds"))
+seurat_obj_no_rbc <- readRDS(paste0(wd, "data/output_baseline/baseline_doublet_no_rbc_filtered_annot_md.rds"))
 subsample_seurat(seurat_obj_no_rbc, output_path2)
 rm(seurat_obj_no_rbc)
 gc()
+
+#Load data for downsampling and save downsampled files
+seurat_obj_post <- readRDS(paste0(wd, "data/output_posttreatment/post_doublet_filtered_md_annot.rds"))
+colnames(seurat_obj_post@meta.data)[26] <- "label"
+
+D14_axi_cel <- subset(seurat_obj_post, subset = orig.ident == "Patient12-D14" | orig.ident == "Patient14-D14")
+D14_tisa_cel <- subset(seurat_obj_post, subset = orig.ident == "Patient20-D14" | orig.ident == "Patient21-D14")
+
+D7_axi_cel <- subset(seurat_obj_post, subset = Product == "Axi-cel")
+D7_axi_cel <- subset(D7_axi_cel, subset = orig.ident == "Patient12-D14" | orig.ident == "Patient14-D14", invert = TRUE)
+D7_tisa_cel <- subset(seurat_obj_post, subset = Product == "Tisa-cel")
+D7_tisa_cel <- subset(D7_tisa_cel, subset = orig.ident == "Patient20-D14" | orig.ident == "Patient21-D14", invert = TRUE)
+
+subsample_seurat(seurat_obj_post, output_path_posttreatment)
+gc()
+
+
+subsample_seurat(D7_axi_cel, output_path_post_axi_D7)
+subsample_seurat(D7_tisa_cel, output_path_post_tisa_D7)
+
+saveRDS(D14_tisa_cel,paste0(output_path_post_tisa_D14, "D14_tisa.rds"))
+saveRDS(D14_axi_cel, paste0(output_path_post_axi_D14, "D14_axi.rds"))
 
 
 

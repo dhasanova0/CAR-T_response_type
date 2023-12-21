@@ -21,6 +21,10 @@ colnames(samples_counts) <- gsub("/", "_per_", colnames(samples_counts))
 #Create df for the different time points
 baseline <- samples_counts[samples_counts$timepoint == 'Baseline',]
 post <- samples_counts[samples_counts$timepoint == 'D7' | samples_counts$timepoint == 'D14',]
+post$patient_time <- paste0(post$patient, "_", post$timepoint)
+colnames(post)[1] <- "patient_id"
+colnames(post)[9] <- "patient"
+post <- post[-c(31),]
 infusion <- samples_counts[samples_counts$timepoint == 'Infusion',]
 
 #Specify path to save figures

@@ -14,7 +14,10 @@ set.seed(12342)
 #Define working directory
 wd = "/Users/dhasanova/Documents/ETH/HS23/"
 
-seurat_obj <- readRDS(paste0(wd, "/data/output/baseline_doublet_filtered_md_annot.rds"))
+output <- paste0(wd, "data/output")
+if (file.exists(output)) {cat("The folder already exists")} else {dir.create(output)}
+
+seurat_obj <- readRDS(paste0(wd, "data/output/baseline_doublet_filtered_md_annot.rds"))
 seurat_obj_no_rbc <- readRDS(paste0(wd, "data/output/baseline_doublet_no_rbc_filtered_md_annot.rds"))
 
 filter_tcr_bcr <- function(seurat_object){
@@ -56,7 +59,6 @@ seurat_obj_no_rbc <- normalisation(seurat_obj_no_rbc)
 
 output1 <- paste0(wd, "data/output/baseline_doublet_filtered_md_annot_norm.rds")
 output2 <- paste0(wd, "data/output/baseline_doublet_no_rbc_filtered_md_annot_norm.rds")
-if (file.exists(output1)) {cat("The folder already exists")} else {dir.create(output1)}
 
 saveRDS(seurat_obj, output1)
 saveRDS(seurat_obj_no_rbc, output2)
@@ -92,6 +94,6 @@ seurat_obj_no_rbc_batch_corr <- integration(seurat_obj_no_rbc)
 output1 <- paste0(wd, "data/output/baseline_doublet_filtered_md_annot_norm_batch.rds")
 output2 <- paste0(wd, "data/output/baseline_doublet_no_rbc_filtered_md_annot_norm_batch.rds")
 
-saveRDS(seurat_obj, output1)
-saveRDS(seurat_obj_no_rbc, output2)
+saveRDS(seurat_obj_batch_corr, output1)
+saveRDS(seurat_obj_no_rbc_batch_corr, output2)
 
