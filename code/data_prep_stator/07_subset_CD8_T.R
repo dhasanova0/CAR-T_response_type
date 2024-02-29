@@ -6,32 +6,17 @@ library(dplyr)
 #Define paths
 wd = "/Users/dhasanova/Documents/ETH/HS23/"
 path_fig <- paste0(wd, "figures/")
-output_path <- (paste0(wd, "data/output/stator_input/CD8/"))
+output_path <- (paste0(wd, "data/output_baseline/stator_input/CD8/"))
 if (file.exists(output_path)) {cat("The folder already exists")} else {dir.create(output_path)}
 
 # Import Seurat object
-input_path <- paste0(wd, "data/output/")
+input_path <- paste0(wd, "data/output_baseline/")
 seurat_obj <- readRDS(paste0(input_path, "baseline_doublet_filtered_md_annot.rds"))
-seurat_obj_corr <- readRDS(paste0(input_path, "baseline_raw_md_annot_corr.rds"))
-
-#Correct annotation in filtered baseline_doublet_filtered_md_annot.rds
-md1 <- data.frame(seurat_obj@meta.data)
-md2 <- data.frame(seurat_obj_corr@meta.data)
-
-md_adj <- md2[md2$barcodes %in% md1$barcodes,]
-md_adj <- md_adj[match(md1$barcodes, md_adj$barcodes),]
-
-md1$cell_type <- md_adj$cell_type
-
-#Add correct annotation to seurat object
-
-seurat_obj <- AddMetaData(seurat_obj, md1$cell_type , col.name = "cell_type")
-
 
 # Subset CD8 T cells
 seurat_CD8 <- subset(seurat_obj, subset = cell_type == 'CD8 T')
 
-# Get md as metadata and plot number of T cells per patient ID
+# Get md as metadata and plot number of CD8 T cells per patient ID
 md <- data.frame(seurat_CD8@meta.data)
 md$label_id <- paste0(md$orig.ident, "_", md$label)
 
@@ -54,5 +39,11 @@ rownames(df) <- sub(".*_", "", rownames(df))
 write.csv(df, file=paste0(output_path, "subset_CD8","_raw.csv"), quote=FALSE)
 write.csv(md, file=paste0(output_path, "subset_CD8","_md.csv"))
 
+md_CD <- read.csv(paste0(output_path, "subset_CD8","_md.csv"))
 
-DefaultAssay(seurat_CD8) <- "RNA"
+#Subset T cells
+Idents(seurat_obj) <- "cell_type"
+seu_obj_base_T <- subset(seurat_obj, ident = c("CD4 T", "CD8 T", "T cell"))
+
+saveRDS(seu_obj_base_T, paste0(input_path, "seu_T.rds"))
+

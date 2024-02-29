@@ -1,3 +1,6 @@
+#Author: Dzhansu Hasanova
+#Create barplots of cell type distributions respective of sample
+
 library(Seurat)
 library("stringr")
 library(ggplot2)
@@ -10,7 +13,7 @@ set.seed(100)
 wd = "/Users/dhasanova/Documents/ETH/HS23/"
 
 input_path_complete <- paste0(wd, "data/output_baseline/")
-seurat_obj_complete <- readRDS(paste0(input_path_complete, "baseline_raw_md_annot_corr.rds"))
+seurat_obj_complete <- readRDS(paste0(input_path_complete, "baseline_raw_md_annot.rds"))
 
 input_path_subset1 <- paste0(wd, "data/output/stator_input/rds_new/")
 seurat_obj_subset1 <- readRDS(paste0(input_path_subset1, "subset_1.rds"))
@@ -37,20 +40,17 @@ if (file.exists(path_fig)) {cat("The folder already exists")} else {dir.create(p
 
 
 
-cols1 = c("#1F78C8", "#ff0000", "#33a02c", "#6A33C2","#36648B", "#ff7f00", "#FFD700", "#a6cee3",
-         "#FB6496", "#b2df8a", "#CAB2D6", "#FDBF6F", "#999999", "#EEE685", "#565656",
+cols1 = c("#1F78C8", "#ff0000", "#33a02c", "#ff7f00", "#6A33C2","#36648B", "#FFD700", "#a6cee3","#565656",
+         "#FB6496", "#b2df8a", "#CAB2D6", "#FDBF6F", "#999999", "#EEE685",
          "#FF83FA", "#C814FA", "#0000FF", "#C8308C", "#00E2E5", "#00FF00", "#778B00", "#BEBE00", "#8B3B00", "#A52A3C")
 
-cols2 = c("#1F78C8", "#ff0000", "#33a02c", "#00E2E5", "#6A33C2","#36648B", "#ff7f00", "#FFD700", "#a6cee3",
-          "#FB6496", "#b2df8a", "#CAB2D6", "#FDBF6F", "#999999", "#EEE685", "#565656",
+cols2 = c("#1F78C8", "#33a02c", "#ff0000", "#00E2E5","#ff7f00",  "#6A33C2","#36648B", "#FFD700", "#a6cee3",
+          "#999999", "#565656", "#FB6496", "#b2df8a", "#CAB2D6", "#FDBF6F", "#EEE685",
           "#FF83FA", "#C814FA", "#0000FF", "#C8308C", "#00FF00", "#778B00", "#BEBE00", "#8B3B00", "#A52A3C")
 
 
 get_md <- function(seurat_obj){
   md <- as.data.frame(seurat_obj@meta.data)
-  md <- md %>% mutate(cell_type = ifelse(is.na(cell_type), "not_defined", cell_type))
-  md$cell_type[md$cell_type == 'Unknown'] <- 'T cell'
-  
   md$label_id <- paste0(md$orig.ident, "_", md$label)
   md$cell_id <- paste0(md$orig.ident, "_", md$cell_type)
   
@@ -131,9 +131,10 @@ ggplot(data=tbl_complete, aes(x=factor(label_id, levels = unique(tbl_complete$la
   scale_fill_manual(values=cols2, name = NULL)+
   ylab("%")+xlab("")+
   theme_bw()+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.title = element_text(hjust = 0.5), )+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.title = element_text(hjust = 0.5), 
+        axis.text=element_text(size=12), legend.text=element_text(size=12))+
   coord_flip() + scale_x_discrete(limits = rev(unique(tbl_complete$label_id)))
-ggsave("complete_cell-type_id_dist_per2_corr.png", path = path_fig, height = 6, width = 7)
+ggsave("complete_cell-type_id_dist_per2_corr.png", path = path_fig, height = 7, width = 9)
 
 ggplot(data=tbl_susbet1, aes(x=factor(reorder(cell_type, -Freq)), Freq, fill = factor(label_id, levels = unique(tbl_susbet1$label_id))))+
   geom_col(position = 'stack')+
@@ -206,4 +207,3 @@ ggplot(data=counts_R, aes(x=reorder(Var1, -percentage), y=percentage)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.title = element_text(hjust = 0.5))
 ggsave("cell-dist_R_perc.png", path = path_fig, height = 5, width = 6)
 
-sum(counts_NR$Freq)

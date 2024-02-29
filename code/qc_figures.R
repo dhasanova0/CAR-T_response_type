@@ -1,3 +1,8 @@
+#Author: Dzhansu Hasanova
+#Functions for creating QC figures, used in 03.0_qc_filtering_baseline.R and
+#03.01_qc_filtering_post.R
+
+
 library(Seurat)
 library("stringr")
 library(ggplot2)
