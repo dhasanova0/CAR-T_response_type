@@ -1,12 +1,29 @@
 # CAR-T_response_type
 
 ## Scripts:
+The folder code contains the scripts used for the analysis.
+ 01_data_prep_stator: 
+ - Contains scripts loading the count matrices and metadata to create Seurat objects. 
+ - The data is quality filtered
+ - The count matrcies are split for Stator
 
-- 00.1_samples_counts.R and 00.2_metadata_exploration: Initial description of data. Input:metadata, Ouput: plots
-- 01_merge_add_metadata.R: Merge all patient's samples to one Seurat object. Add metadata to the Seurat object
-- 02_cell_annotation_haradhvala.R: Annotate cells with existing annotations from the publication of Haradhvala et al.
-- 03_qc_filtering.R: Perform QC and filter out low quality cells
-- 04_doublet_removal.R: Identicfy doublets with DoubletFinder and remove them
-- 05_normalize_batch_correction.R: Normalize data, perform batch correction on patient_id and remove TCR/BCR genes
-- 06_subsample_20k.R: Create downsampled seurat objects containing 20k cells (10k R, 10k NR) preserving cell proportions per patient
-- 07_export_rawcm_md.R: Export raw count matrices and metadata files as ".csv" from downsampled files 
+02_data_exploration
+- Contains scripts for metadata exploration
+- Characterizes scRNA-seq data
+
+03_create_md_stator
+- Creates metadata for input in Stator of the cells from which interactions were inferred
+
+04_projections
+- Projection of sates to other cells
+- Analysis of data with projected cells
+
+05_downstream_analyses
+- Comparison of various Stator runs
+- Comparison of Stator results and initial analysis
+- State enrichemnt analyses
+
+get_state_function.R: Function which labels cells with states (cells already labeled with interactions)
+qc_figures.R: Function which creates various figures for quality control
+
+
