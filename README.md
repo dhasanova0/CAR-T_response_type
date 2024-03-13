@@ -25,6 +25,7 @@ The folder code contains the scripts used for the analysis.
 - State enrichemnt analyses
 
 get_state_function.R: Function which labels cells with states (cells already labeled with interactions)
+
 qc_figures.R: Function which creates various figures for quality control
 
 
