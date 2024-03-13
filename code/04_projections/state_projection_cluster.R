@@ -1,7 +1,7 @@
 #Author: Dzhansu Hasanova
 #Projection of interactions (d-tuples) on remaining cells. If a given expression pattern
 #of an interaction is in a cell then the cell is labeled with the respective interaction
-#This script was run on the university cluster eddie (HTC)
+#This script was run on the university cluster eddie (HPC)
 #Files in data/output_baseline/states were generated with this script with according state and Seurat objects as input
 
 set.seed(12342)
