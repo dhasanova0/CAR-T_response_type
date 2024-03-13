@@ -13,7 +13,7 @@ set.seed(100)
 wd = "/Users/dhasanova/Documents/ETH/HS23/"
 
 input_path_complete <- paste0(wd, "data/output_baseline/")
-seurat_obj_complete <- readRDS(paste0(input_path_complete, "baseline_raw_md_annot.rds"))
+seurat_obj_complete <- readRDS(paste0(input_path_complete, "baseline_doublet_filtered_md_annot.rds"))
 
 input_path_subset1 <- paste0(wd, "data/output/stator_input/rds_new/")
 seurat_obj_subset1 <- readRDS(paste0(input_path_subset1, "subset_1.rds"))
@@ -92,6 +92,11 @@ create_table_celltye_id <- function(md){
                       rep("Patient21-Baseline_R",10), rep("Patient30-Baseline_R",10), rep("Patient31-Baseline_NR",10),
                       rep("Patient15-Baseline_R",10), rep("Patient23-Baseline_NR",10), rep("Patient22-Baseline_R",10),
                       rep("Patient10-Baseline_NR",10), rep("Patient11-Baseline_R",10))
+  # Extracting indices for sorting
+  sorted_indices <- order(gsub(".*-Baseline_(NR|R)", "\\1", sorted_columns), as.numeric(gsub("Patient(\\d+)-.*", "\\1", sorted_columns)))
+  
+  # Sorting the list
+  sorted_columns <- sorted_columns[sorted_indices]
   
   order_indices <- order(match(tbl$label_id, sorted_columns))
   tbl <- tbl[order_indices, ]
@@ -134,7 +139,7 @@ ggplot(data=tbl_complete, aes(x=factor(label_id, levels = unique(tbl_complete$la
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1), plot.title = element_text(hjust = 0.5), 
         axis.text=element_text(size=12), legend.text=element_text(size=12))+
   coord_flip() + scale_x_discrete(limits = rev(unique(tbl_complete$label_id)))
-ggsave("complete_cell-type_id_dist_per2_corr.png", path = path_fig, height = 7, width = 9)
+ggsave("complete_cell-type_id_dist_per.png", path = path_fig, height = 7, width = 9)
 
 ggplot(data=tbl_susbet1, aes(x=factor(reorder(cell_type, -Freq)), Freq, fill = factor(label_id, levels = unique(tbl_susbet1$label_id))))+
   geom_col(position = 'stack')+

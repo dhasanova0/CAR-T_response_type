@@ -8,7 +8,7 @@ library(Seurat)
 wd = "/Users/dhasanova/Documents/ETH/HS23/"
 
 
-seu_obj <- readRDS(paste0(wd, "data/output_baseline/counts/post_state_baseline.rds"))
+seu_obj <- readRDS(paste0(wd, "data/output_baseline/states/post_state_baseline.rds"))
 md <- read.csv(paste0(wd,"data/output_posttreatment/stator_input/tisa_cel/raw_md_D7/subset1_md.csv"))
 
 md <- seu_obj@meta.data[rownames(seu_obj@meta.data) %in% md$X,]

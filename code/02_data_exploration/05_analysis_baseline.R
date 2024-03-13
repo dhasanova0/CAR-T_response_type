@@ -83,12 +83,13 @@ EnhancedVolcano(DE ,
                 rownames(DE ),
                 x ="avg_log2FC",
                 y ="p_val_adj",
-                selectLab = c(rownames(DE)[1:5], rev(rownames(DE)[(nrow(DE)-3):nrow(DE)])),
+                #selectLab = c(rownames(DE)[1:5], rev(rownames(DE)[(nrow(DE)-3):nrow(DE)])),
                 title = "R vs NR",
                 subtitle = 'Baseline samples',
+                drawConnectors = TRUE,
                 FCcutoff = 0.5,
                 labSize = 4.0)
-ggsave("DE_volcano.png", path = paste0(wd, "figures/baseline/analysis/", width = 8, height = 7))
+ggsave("DE_volcano.png", path = paste0(wd, "figures/baseline/analysis/"), width = 8, height = 7)
 
 
 

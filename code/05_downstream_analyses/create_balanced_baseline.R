@@ -15,7 +15,6 @@ library(groupdata2)
 wd = "/Users/dhasanova/Documents/ETH/HS23/"
 
 seu_obj_base <- readRDS(paste0(wd, "data/output_baseline/states/baseline_state_valid.rds"))
-states <- read.csv(paste0(wd, "data/stator_results/axi_D7_1/Shiny_results/State_Table-2024-01-03.csv"))
 
 # --------------------- Balance across patients ---------------------
 

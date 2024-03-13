@@ -274,8 +274,8 @@ get_enrichment(baseline_filtered_0.83, 'label_id', states_filtered_0.83,
                paste0(wd, "data/stator_results/run1_filtered/projected/heatmap_state_id_filtered_fold.csv"), TRUE, FALSE, FALSE )
 
 get_enrichment(baseline_filtered_0.83, 'cell_label', states_filtered_0.83, 
-               paste0(wd, "data/stator_results/run1_filtered/projected/heatmap_state_cell_joint_filtered_0.5.pdf"),
-               paste0(wd, "data/stator_results/run1_filtered/projected/heatmap_state_cell_joint_filtered_0.5_fold.csv"), TRUE, FALSE, FALSE )
+               paste0(wd, "data/stator_results/run1_filtered/projected/heatmap_state_cell_joint_filtered.pdf"),
+               paste0(wd, "data/stator_results/run1_filtered/projected/heatmap_state_cell_joint_filtered_fold.csv"), TRUE, FALSE, FALSE )
 
 # ---------------- Baseline Filtered  0.5 -----------------------
 
@@ -321,9 +321,6 @@ get_enrichment(baseline_filtered_0.5, 'cell_label', states_filtered_0.5,
 baseline_run2 <- readRDS(paste0(wd, "data/output_baseline/states/baseline_state_run2_valid.rds"))
 states_baseline_r2 <- read.csv(paste0(wd, "data/stator_results/run3/run3/results/State_Table-2024-02-01.csv"))
 
-baseline_run2@meta.data$cell_type[baseline_run2@meta.data$cell_type == "Infusion T"] <- "T cell"
-saveRDS(baseline_run2, paste0(wd, "data/output_baseline/states/baseline_state_run2_valid.rds"))
-
 get_enrichment(baseline_run2, 'label', states_baseline_r2, 
                paste0(wd, "data/stator_results/run3/run3/results/valid/heatmap_state_label.pdf"),
                paste0(wd, "data/stator_results/run3/run3/results/valid/heatmap_state_label_fold.csv"), FALSE, TRUE, TRUE )
@@ -358,8 +355,6 @@ get_enrichment(post_run1_baseline, 'Product', states_baseline_r1,
 
 #Post-treatment axi-cel D7
 
-saveRDS(axi_D7, paste0(wd, "data/output_posttreatment/states/seu_obj_axi_D7_valid.rds"))
-saveRDS(tisa_D7, paste0(wd, "data/output_posttreatment/states/seu_obj_tisa_D7_umap.rds"))
 
 axi_D7 <- readRDS(paste0(wd, "data/output_posttreatment/states/seu_obj_axi_D7_valid.rds"))
 states_axi_D7 <- read.csv(paste0(wd, "data/stator_results/axi_D7_1/Shiny_results/State_Table-2024-01-03.csv"))
@@ -387,7 +382,7 @@ get_enrichment(tisa_D7, 'cell_type', states_tisa_D7,
                paste0(wd, "data/output_posttreatment/states/tisa_D7/heatmap_state_cell_post_fold.csv"), FALSE, TRUE, TRUE )
 
 
-# ---------------- Baseline T cell -----------------------
+# ---------------- Baseline T cell (not part of the thesis) -----------------------
 #Baseline T cell
 
 T_cell <- readRDS(paste0(wd, "data/output_baseline/states/base_T_cell.rds"))

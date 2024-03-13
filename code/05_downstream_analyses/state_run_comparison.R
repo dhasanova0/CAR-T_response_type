@@ -19,7 +19,7 @@ baseline_states_run1 <- read.csv(paste0(wd, "data/stator_results/run1/State_Tabl
 baseline_states_run1$Genes <- strsplit(baseline_states_run1$Genes, "_")
 baseline_states_run1$D.tuple <- gsub("\\D", "", baseline_states_run1$D.tuple)
 
-baseline_states_run2 <- read.csv(paste0(wd, "data/stator_results/run3/run3/results/State_Table-2024-02-01.csv"))
+baseline_states_run2 <- read.csv(paste0(wd, "data/stator_results/run3/results/State_Table-2024-02-01.csv"))
 baseline_states_run2$Genes <- strsplit(baseline_states_run2$Genes, "_")
 baseline_states_run2$D.tuple <- gsub("\\D", "", baseline_states_run2$D.tuple)
 
@@ -28,11 +28,11 @@ baseline_states_run1_filtered$Genes <- strsplit(baseline_states_run1_filtered$Ge
 baseline_states_run1_filtered$D.tuple <- gsub("\\D", "", baseline_states_run1_filtered$D.tuple)
 
 
-post_axi_D7 <- read.csv(paste0(wd, "data/stator_results/axi_D7_1/Shiny results/State_Table-2024-01-03.csv"))
+post_axi_D7 <- read.csv(paste0(wd, "data/stator_results/axi_D7_1/Shiny_results/State_Table-2024-01-03.csv"))
 post_axi_D7$Genes <- strsplit(post_axi_D7$Genes, "_")
 post_axi_D7$D.tuple <- gsub("\\D", "", post_axi_D7$D.tuple)
 
-post_tisa_D7 <- read.csv(paste0(wd, "data/stator_results/tisa_D7/Shiny results/State_Table-2024-02-08.csv"))
+post_tisa_D7 <- read.csv(paste0(wd, "data/stator_results/tisa_D7/Shiny_results/State_Table-2024-02-08.csv"))
 post_tisa_D7$Genes <- strsplit(post_tisa_D7$Genes, "_")
 post_tisa_D7$D.tuple <- gsub("\\D", "", post_tisa_D7$D.tuple)
 

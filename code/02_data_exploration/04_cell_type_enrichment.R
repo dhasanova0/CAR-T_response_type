@@ -96,10 +96,10 @@ enrich_analysis <- function(ls, col_names, md, row_names, title, path ){
 #Baseline
 md <- read.csv(paste0(wd, "code/MFIs/data/md/subset1_md_corr_cell_id.csv"))
 md$Cell.Types[md$Cell.Types == "not_defined"] <- "Unknown"
-md_label <- read.csv(paste0(wd,"code/MFIs/data/md/subset1_md_label_ID_joint.csv"))
+md_label <- read.csv(paste0(wd,"data/stator_results/run1/md/subset1_md_label_ID_joint.csv"))
 md$Cell.State <- md_label$label_ID
 
-seu_obj <- readRDS(paste0(wd,"data/output_baseline/counts/baseline_state.rds"))
+seu_obj <- readRDS(paste0(wd,"data/output_baseline/states/baseline_state.rds"))
 md_seurat <- data.frame(seu_obj@meta.data)
 
 R <- as.data.frame(table(md_seurat[md_seurat$label %in% c("R"),]$cell_type))
@@ -128,7 +128,7 @@ for (i in 1:20){
 
 
 #Posttreatment
-seu_obj_post <- readRDS(paste0(wd,"data/output_baseline/counts/post_state_baseline.rds"))
+seu_obj_post <- readRDS(paste0(wd,"data/output_baseline/states/post_state_baseline.rds"))
 md_seurat_post <- data.frame(seu_obj_post@meta.data)
 
 R_post <- as.data.frame(table(md_seurat_post[md_seurat_post$Response_classification %in% c("R"),]$cell_type))

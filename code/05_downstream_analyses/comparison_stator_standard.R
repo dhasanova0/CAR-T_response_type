@@ -10,6 +10,8 @@ library(Seurat)
 library(stringr)
 library(ggplot2)
 library(ggrepel)
+library(ggpubr)
+library(enrichR)
 
 #Define working directory
 wd = "/Users/dhasanova/Documents/ETH/HS23/"
@@ -64,14 +66,8 @@ ggplot(total_long, aes(y=avg_log2FC, x=stator_seurat, fill = stator_seurat)) +
   xlab("") +
   ylab("average log2 FC") + stat_compare_means() +
   scale_x_discrete(labels = c("DE Cells", "DE States")) 
-ggsave("violin_comparison.png", path =  paste0(wd, "data/stator_results/run3/run3/results/comp/"), width = 5, height = 5)
+ggsave("violin_comparison.png", path =  paste0(wd, "data/stator_results/run3/results/comp/"), width = 5, height = 5)
 
-
-# Generate plot
-
-v <- ggvenn(list(DE_cells=c(DE_up_NR, DE_up_R), DE_states=c(stator_up_NR, stator_up_R)), show_elements = T, label_sep = ",")
-
-ggsave(v, file=paste0(wd, "figures/baseline/analysis/venn_comparison.png"))
 
 #Perform GO for the top 40 DE genes
 
@@ -84,26 +80,34 @@ dbs <- c("GO_Biological_Process_2023")
 enriched_standard_NR <- enrichr(c(DE_standard$X[1:20]), dbs)
 plotEnrich(enriched_standard_NR[[1]], showTerms = 10, numChar = 100, y = "Count", orderBy = "P.value", 
            title = "Functional Enrichment of Biological Processes in NR")+
-  theme(axis.text=element_text(size=15))+ ylab("")
-ggsave("GO_standard_NR.png", path = paste0(wd, "data/stator_results/run3/run3/results/comp/"), width = 15, height = 5)
+  theme(axis.text=element_text(size=18), plot.title = element_text(face="bold", size = 20), axis.title= element_text(size = 18),
+        legend.title=element_text(size=15), 
+        legend.text=element_text(size=11))+ ylab("Gene count") 
+ggsave("GO_standard_NR.png", path = paste0(wd, "data/stator_results/run3/results/comp/"), width = 15, height = 5)
 
 enriched_stator_NR <- enrichr(c(DE_stator$X[1:20]), dbs)
 plotEnrich(enriched_stator_NR[[1]], showTerms = 10, numChar = 100, y = "Count", orderBy = "P.value", 
            title = "Functional Enrichment of Biological Processes in NR states")+
-  theme(axis.text=element_text(size=15))+ ylab("")
-ggsave("GO_stator_NR.png", path = paste0(wd, "data/stator_results/run3/run3/results/comp/"), width = 15, height = 5)
+  theme(axis.text=element_text(size=18), plot.title = element_text(face="bold", size = 20), axis.title= element_text(size = 18),
+        legend.title=element_text(size=15), 
+        legend.text=element_text(size=11))+ ylab("") + ylab("Gene count")
+ggsave("GO_stator_NR.png", path = paste0(wd, "data/stator_results/run3/results/comp/"), width = 18, height = 5)
 
 enriched_standard_R <- enrichr(rev(c(DE_standard$X[(nrow(DE_standard)-19):nrow(DE_standard)])), dbs)
 plotEnrich(enriched_standard_R[[1]], showTerms = 10, numChar = 100, y = "Count", orderBy = "P.value", 
            title = "Functional Enrichment of Biological Processes in R")+
-  theme(axis.text=element_text(size=15))+ ylab("")
-ggsave("GO_standard_R.png", path = paste0(wd, "data/stator_results/run3/run3/results/comp/"), width = 19, height = 7)
+  theme(axis.text=element_text(size=18), plot.title = element_text(face="bold", size = 20), axis.title= element_text(size = 18),
+        legend.title=element_text(size=15), 
+        legend.text=element_text(size=11))+ ylab("") + ylab("Gene count")
+ggsave("GO_standard_R.png", path = paste0(wd, "data/stator_results/run3/results/comp/"), width = 19, height = 5)
 
 enriched_stator_R <- enrichr(rev(c(DE_stator$X[(nrow(DE_stator)-19):nrow(DE_stator)])), dbs)
 plotEnrich(enriched_stator_R[[1]], showTerms = 10, numChar = 100, y = "Count", orderBy = "P.value", 
            title = "Functional Enrichment of Biological Processes in R states")+
-  theme(axis.text=element_text(size=15))+ ylab("")
-ggsave("GO_stator_R.png", path = paste0(wd, "data/stator_results/run3/run3/results/comp/"), width = 15, height = 5)
+  theme(axis.text=element_text(size=18), plot.title = element_text(face="bold", size = 20), axis.title= element_text(size = 18),
+        legend.title=element_text(size=15), 
+        legend.text=element_text(size=11))+ ylab("") + ylab("Gene count")
+ggsave("GO_stator_R.png", path = paste0(wd, "data/stator_results/run3/results/comp/"), width = 16, height = 5)
 
 
 setdiff(c(DE_stator$X[1:20], rev(c(DE_stator$X[(nrow(DE_stator)-19):nrow(DE_stator)]))), c(DE_standard$X[1:20], rev(c(DE_standard$X[(nrow(DE_standard)-19):nrow(DE_standard)]))))

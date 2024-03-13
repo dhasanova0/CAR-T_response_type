@@ -111,7 +111,7 @@ simple_qc_plot(baseline_filtered, "QC_after_doublet.png", path_qc_fig_baseline)
 get_counts(baseline_filtered@meta.data$orig.ident,"Number of cells after filtering", "after_filtering_doublet.png", path_qc_fig_baseline)
 QC_plots(baseline_filtered@meta.data, "after_doublet", path_qc_fig_baseline)
 
-saveRDS(baseline_filtered, paste0(wd, "data/output/baseline_doublet_filtered_md_annot.rds"))
+saveRDS(baseline_filtered, paste0(wd, "data/output_baseline/baseline_doublet_filtered_md_annot.rds"))
 
 #------------------- Post-treatment -------------------
 
@@ -120,7 +120,7 @@ simple_qc_plot(seurat_obj_post, "QC_after_doublet.png", path_qc_fig_post )
 get_counts(seurat_obj_post@meta.data$orig.ident,"Number of cells after filtering", "after_filtering_doublet.png", path_qc_fig_post)
 QC_plots(seurat_obj_post@meta.data, "after_doublet", path_qc_fig_post)
 
-saveRDS(baseline_filtered_post, "/exports/igmm/eddie/ponting-lab/dzhansu/data/output/post_doublet_filtered_md_annot.rds")
+saveRDS(baseline_filtered_post, "/exports/igmm/eddie/ponting-lab/dzhansu/data/output_posttreatment/post_doublet_filtered_md_annot.rds")
 
 
 

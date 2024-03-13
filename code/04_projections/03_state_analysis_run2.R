@@ -139,11 +139,48 @@ ggsave("umap_state11.png", path = paste0(wd, "data/stator_results/run3/results/u
 Idents(seu_obj) <- "cell_type"
 T_seu <- subset(x = seu_obj, idents = c("CD4 T", "CD8 T", "T cell"))
 
-Idents(seu_obj) <- "Cluster:8"
+T_seu <- NormalizeData(T_seu, normalization.method = "LogNormalize", scale.factor = 10000)
+T_seu <- FindVariableFeatures(T_seu, selection.method = "vst", nfeatures = 2000)
+T_seu <- ScaleData(T_seu)
 
-DE_c8 <- FindMarkers(object = seu_obj, ident.1 = "yes", logfc.threshold = 0.25)
+Idents(T_seu) <- "Cluster:8"
+
+DE_c8 <- FindMarkers(object = T_seu, ident.1 = "yes", logfc.threshold = 0.25)
 DE_c8 <- DE_c8[DE_c8$p_val_adj<0.05,]
 DE_c8$genes <- rownames(DE_c8)
 write.csv(DE_c8, paste0(wd, "figures/stator_run1/thesis/valid/DE/DE_c8_T_vs_all.csv"))
+
+EnhancedVolcano(DE_c8 , 
+                rownames(DE_c8 ),
+                x ="avg_log2FC",
+                y ="p_val_adj",
+                title = "Cells in state 8 vs all other cells",
+                selectLab = c("CD69", "JUN", "LTB", "IL7R", "TNFAIP3", "FOS", "CXCR4", "CD247", "TSPYL2"),
+                subtitle = 'Baseline samples',
+                drawConnectors = TRUE,
+                FCcutoff = 0.5,
+                labSize = 6.0, max.overlaps=Inf)
+ggsave("DE_c8_T.png", path = paste0(wd, "data/stator_results/run3/results/valid/"), width = 15, height = 10)
+
+VlnPlot(T_seu, features = "CNST",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("CNST_T.png", path = paste0(wd, "data/stator_results/run3/results/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "LTB",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("LTB_T.png", path = paste0(wd, "data/stator_results/run3/results/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "TNFRSF4",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("TNFRSF4_T.png", path = paste0(wd, "data/stator_results/run3/results/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "CCL5",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("CCL5_T.png", path = paste0(wd, "data/stator_results/run3/results/valid/"), width = 4, height = 5)
+
 
 

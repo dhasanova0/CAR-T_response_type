@@ -31,7 +31,7 @@ seu_obj <- FindVariableFeatures(seu_obj, selection.method = "vst", nfeatures = 2
 seu_obj <- ScaleData(seu_obj)
 
 #saveRDS(seu_obj, paste0(wd, "data/output_baseline/counts/baseline_state_valid.rds"))
-#seu_obj <- readRDS(paste0(wd, "data/output_baseline/counts/baseline_state_valid.rds"))
+#seu_obj <- readRDS(paste0(wd, "data/output_baseline/states/baseline_state_valid.rds"))
 
 seu_obj <- get_state(seu_obj, states)
 
@@ -155,19 +155,13 @@ EnhancedVolcano(DE ,
                 x ="avg_log2FC",
                 y ="p_val_adj",
                 drawConnectors = TRUE,
-                selectLab = c("CD69", "JUN", "LTB", "IL7R", "TNFAIP3", "FOS", "CXCR4"),
+                selectLab = c("CD69", "JUN", "LTB", "IL7R", "TNFAIP3", "FOS", "CXCR4", "CD247", "TSPYL2", "KLRG1"),
                 title = "Cells in state 1 vs all other cells",
                 subtitle = 'States inferred from first subset',
                 FCcutoff = 0.5,
                 labSize = 6.0)
 ggsave("DE_C1_vs_all.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 15, height = 10)
 
-
-#Check CD69 expression ViolinPlot between R and NR
-Idents(seu_obj) <- "label"
-VlnPlot(seu_obj, features = "CD69", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
-  stat_compare_means()
-ggsave("CD69.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 4, height = 5)
 
 
 #Check CD69 expression ViolinPlot in patient samples
@@ -212,6 +206,25 @@ DE_2 <- FindMarkers(object = seu_obj, ident.1 = "yes", logfc.threshold = 0.25)
 DE_2 <- DE_2[DE_2$p_val_adj<0.05,]
 write.csv(DE_2, paste0(wd, "figures/stator_run1/thesis/valid/DE/DE_s2.csv"))
 
+Idents(seu_obj) <- "Cluster:7"
+DE_7 <- FindMarkers(object = seu_obj, ident.1 = "yes", logfc.threshold = 0.25)
+DE_7 <- DE_7[DE_7$p_val_adj<0.05,]
+DE_7$genes <- rownames(DE_7)
+write.csv(DE_7, paste0(wd, "figures/stator_run1/thesis/valid/DE/DE_s7.csv"))
+
+EnhancedVolcano(DE_7 , 
+                rownames(DE_7 ),
+                x ="avg_log2FC",
+                y ="p_val_adj",
+                drawConnectors = TRUE,
+                selectLab = c("ITGAM", "HLA-DRB5", "S100A12", "S100A10", "S100A11", "CD33", "CD14"),
+                title = "Monocytes in state 7 vs all other monocytes",
+                subtitle = '',
+                FCcutoff = 0.5,
+                labSize = 6.0)
+ggsave("DE_C7_vs_all.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 15, height = 10)
+
+
 #DE analyses T cells
 
 Idents(seu_obj) <- "cell_type"
@@ -232,8 +245,7 @@ EnhancedVolcano(DE_1_T ,
                 x ="avg_log2FC",
                 y ="p_val_adj",
                 drawConnectors = TRUE,
-                selectLab = c("FOS","CD69", "JUN", "LTB", "IL7R", "DUSP1", "NKG7", "GZMH",
-                              "FGFBP2", "GNLY", "GZMB"),
+                selectLab = c("CD69", "JUN", "LTB", "IL7R", "TNFAIP3", "FOS", "CXCR4", "CD247", "TSPYL2", "KLRG1", "GZMK", "DUSP2"),
                 title = "T Cells in state 1 vs all other cells",
                 subtitle = '',
                 FCcutoff = 0.5,
@@ -284,22 +296,22 @@ DE_mono_7 <- DE_mono_7[DE_mono_7$p_val_adj<0.05,]
 DE_mono_7$genes <- rownames(DE_mono_7)
 write.csv(DE_mono_7, paste0(wd, "figures/stator_run1/thesis/valid/DE/DE_mono_7.csv"))
 
+EnhancedVolcano(DE_mono_17_all , 
+                rownames(DE_mono_17_all ),
+                x ="avg_log2FC",
+                y ="p_val_adj",
+                drawConnectors = TRUE,
+                selectLab = c("ITGAM", "HLA-DRB5", "S100A12", "S100A10", "S100A11", "CXCL8",
+                              "CCL3", "JUN", "G0S2", "FOSB"),
+                title = "Monocytes in state 7 vs all other monocytes",
+                subtitle = '',
+                FCcutoff = 0.5,
+                labSize = 6.0)
+ggsave("DE_C7_vs_all_mono.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 15, height = 10)
 
 
-#---------------------- Dice Distance 0.5 Monocyte state 17 and CD4T cell state 5 ---------------------------
 
-
-mono <- subset(x = seu_obj_0.5, subset = cell_type == "Monocyte")
-
-mono <- NormalizeData(mono, normalization.method = "LogNormalize", scale.factor = 10000)
-mono <- FindVariableFeatures(mono, selection.method = "vst", nfeatures = 2000)
-mono <- ScaleData(mono)
-
-Idents(mono) <- "Cluster:17"
-DE_mono_17_all <- FindMarkers(object = mono, ident.1 = "yes", logfc.threshold = 0.25)
-DE_mono_17_all <- DE_mono_17_all[DE_mono_17_all$p_val_adj<0.05,]
-DE_mono_17_all$genes <- rownames(DE_mono_17_all)
-write.csv(DE_mono_17_all, paste0(wd, "figures/stator_run1/thesis/valid/DE/DE_mono_17_vs_all.csv"))
+#---------------------- Dice Distance 0.5 CD4T cell state 5 ---------------------------
 
 
 CD4 <- subset(x = seu_obj_0.5, subset = cell_type == "CD4 T")
@@ -313,6 +325,63 @@ DE_CD4_c5_all <- FindMarkers(object = CD4, ident.1 = "yes", logfc.threshold = 0.
 DE_CD4_c5_all <- DE_CD4_c5_all[DE_CD4_c5_all$p_val_adj<0.05,]
 DE_CD4_c5_all$genes <- rownames(DE_CD4_c5_all)
 write.csv(DE_CD4_c5_all, paste0(wd, "figures/stator_run1/thesis/valid/DE/DE_CD4_c5_vs_all.csv"))
+
+#---------------------- #Check State 1 genes expression ViolinPlot between R and NR in T cells ---------------------------
+
+
+Idents(T_seu) <- "label"
+VlnPlot(T_seu, features = "CD69", group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("CD69_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "CD247",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("CD247_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "IL7R",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("IL7R_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "CST3",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("CST3_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "TSPYL2",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("TSPYL2_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "TNFAIP2",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("TNFAIP2_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "JUN",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("JUN_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 4, height = 5)
+
+VlnPlot(T_seu, features = "KLRG1",group.by = "label", pt.size = 0, cols = c("dodgerblue3", "darkorange2")) +
+  stat_compare_means() + stat_summary(fun.data = "mean_cl_boot", geom = "pointrange",
+                                      colour = "black")
+ggsave("KLRG1_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 4, height = 5)
+
+T_seu@meta.data$label_orig.ident <- paste0(T_seu@meta.data$label, "_" ,T_seu@meta.data$orig.ident)
+Idents(T_seu) <- "label_orig.ident"
+levels(T_seu) <- unique(T_seu@meta.data$label_orig.ident)[order(unique(T_seu@meta.data$label_orig.ident))]
+
+VlnPlot(T_seu, features = "CD69", pt.size = 0, cols = cols1) + NoLegend() + theme(axis.text.x = element_text(angle = 90))
+ggsave("violin_CD69_sample_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 7, height = 5)
+
+VlnPlot(T_seu, features = "JUN", pt.size = 0, cols = cols1) + NoLegend() + theme(axis.text.x = element_text(angle = 90))
+ggsave("violin_JUN_sample_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 7, height = 5)
+
+VlnPlot(T_seu, features = "CXCR4", pt.size = 0, cols = cols1) + NoLegend() + theme(axis.text.x = element_text(angle = 90))
+ggsave("violin_CXCR4_sample_T.png", path = paste0(wd, "figures/stator_run1/thesis/valid/"), width = 7, height = 5)
 
 
 

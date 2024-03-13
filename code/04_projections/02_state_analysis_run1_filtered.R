@@ -21,7 +21,7 @@ wd = "/Users/dhasanova/Documents/ETH/HS23/"
 seu_obj <- readRDS(paste0(wd, "data/output_baseline/states/base_filtered_states.rds"))
 
 
-md_corr <- read.csv(paste0(wd, "code/MFIs/data/md/subset1_md_corr.csv"))
+md_corr <- read.csv(paste0(wd, "data/stator_results/run1/md/subset1_md_cell.csv"))
 
 states_0.83 <- read.csv(paste0(wd, "data/stator_results/run1_filtered/shiny/State_Table-filtered.csv"))
 states_0.5 <- read.csv(paste0(wd, "data/stator_results/run1_filtered/shiny/State_Table-2024-0.5.csv"))
