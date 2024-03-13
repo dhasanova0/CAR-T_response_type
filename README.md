@@ -34,7 +34,6 @@ Raw count matrices obtained from: [GEO accession GSE197268](https://www.ncbi.nlm
 Metadata obtained from: [Haradhvala_et_al_2022](https://github.com/getzlab/Haradhvala_et_al_2022)
 
 Input files for the scripts (except for the scripts in 01_data_prep_stator) are provided here: [Input files](https://polybox.ethz.ch/index.php/s/ehdTC9k7jRT7g5j)
-
-The input paths were preserved. Each script's working directory (wd) must be adjusted to the user's wd. 
+- The input paths were preserved. Each script's working directory (wd) must be adjusted to the user's wd. 
 
 Relevant outputs that were discussed in the thesis are provided here: [Results](https://polybox.ethz.ch/index.php/s/YVN7hLXujlEb24T)
