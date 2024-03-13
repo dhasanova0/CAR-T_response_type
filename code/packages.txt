@@ -7,7 +7,7 @@ The follwoing file contains the packages and their versions used for the analyse
   - MatrixGenerics (version 1.14.0; Ahlmann-Eltze C et al., 2023)
   - GenomeInfoDb (version 1.38.5; Arora S et al., 2023)
   - gridExtra (version 2.3; Auguie B, 2017)
-  - Matrix (version 1.6.5; Bates D et al., 2024)
+  - Matrix (version 1.6.4; Bates D et al., 2024)
   - matrixStats (version 1.2.0; Bengtsson H, 2023)
   - EnhancedVolcano (version 1.20.0; Blighe K et al., 2023)
   - ggsignif (version 0.6.4; Constantin A, Patil I, 2021)
