@@ -1,12 +1,42 @@
-# CAR-T_response_type
+# Identifying biological factors influencing response type in CAR-T cell therapy
 
-## Scripts:
+## Description
+This study aims to discover biological factors associated with response type in CAR-T cell therapy from the transcriptome of PBMCs prior to treatment from patients diagnosed with Large B cell lymphoma. The study aims to understand the underlying biological factors in patients' PBMCs the could influence response type. This eventually would allow to improve patient stratification and future clinical trial designs. The study was conducted on publicly available scRNA-seq data originating from the study of [Haradhvala et. al](https://doi.org/10.1038/s41591-022-01959-0). Common approaches in scRNA-seq were applied to extract meaningful biological insights from the data. In addition, the novel statistical method, [Stator](https://doi.org/10.1101/2023.12.18.572232), was applied to further characterize the cellular heterogenity linked to a given response type (responder, non-responder). This repository contains the scripts that were used for the analysis. 
 
-- 00.1_samples_counts.R and 00.2_metadata_exploration: Initial description of data. Input:metadata, Ouput: plots
-- 01_merge_add_metadata.R: Merge all patient's samples to one Seurat object. Add metadata to the Seurat object
-- 02_cell_annotation_haradhvala.R: Annotate cells with existing annotations from the publication of Haradhvala et al.
-- 03_qc_filtering.R: Perform QC and filter out low quality cells
-- 04_doublet_removal.R: Identicfy doublets with DoubletFinder and remove them
-- 05_normalize_batch_correction.R: Normalize data, perform batch correction on patient_id and remove TCR/BCR genes
-- 06_subsample_20k.R: Create downsampled seurat objects containing 20k cells (10k R, 10k NR) preserving cell proportions per patient
-- 07_export_rawcm_md.R: Export raw count matrices and metadata files as ".csv" from downsampled files 
+## Scripts
+The folder code contains the scripts used for the analysis.
+
+ ### 01_data_prep_stator: 
+ - Contains scripts loading the count matrices and metadata to create Seurat objects. 
+ - The data is quality filtered
+ - The count matrices are split for Stator
+
+### 02_data_exploration
+- Contains scripts for metadata exploration
+- Characterizes scRNA-seq data
+
+### 03_create_md_stator
+- Creates metadata for input in Stator of the cells from which interactions were inferred
+
+### 04_projections
+- Projection of sates to other cells
+- Analysis of data with projected cells
+
+### 05_downstream_analyses
+- Comparison of various Stator runs
+- Comparison of Stator results and initial analysis
+- State enrichemnt analyses
+
+get_state_function.R: Function which labels cells with states (cells already labeled with interactions)
+
+qc_figures.R: Function which creates various figures for quality control
+
+## Data
+Raw count matrices obtained from: [GEO accession GSE197268](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE197268)
+
+Metadata obtained from: [Haradhvala_et_al_2022](https://github.com/getzlab/Haradhvala_et_al_2022)
+
+Input files for the scripts (except for the scripts in 01_data_prep_stator) are provided here: [Input files](https://polybox.ethz.ch/index.php/s/ehdTC9k7jRT7g5j)
+- The input paths were preserved. Each script's working directory (wd) must be adjusted to the user's wd. 
+
+Relevant outputs that were discussed in the thesis are provided here: [Results](https://polybox.ethz.ch/index.php/s/YVN7hLXujlEb24T)
