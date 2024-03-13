@@ -4,7 +4,7 @@
 This study aims to discover biological factors associated with response type in CAR-T cell therapy from the transcriptome of PBMCs prior to treatment from patients diagnosed with Large B cell lymphoma. The study aims to understand the underlying biological factors in patients' PBMCs the could influence response type. This eventually would allow to improve patient stratification and future clinical trial designs. The study was conducted on publicly available scRNA-seq data originating from the study of [Haradhvala et. al](https://doi.org/10.1038/s41591-022-01959-0). Common approaches in scRNA-seq were applied to extract meaningful biological insights from the data. In addition, the novel statistical method, [Stator](https://doi.org/10.1101/2023.12.18.572232), was applied to further characterize the cellular heterogenity linked to a given response type (responder, non-responder). This repository contains the scripts that were used for the analysis. 
 
 ## Scripts
-The folder *code* contains the scripts used for the analysis.
+The folder **code** contains the scripts used for the analysis.
 
  ### 01_data_prep_stator: 
  - Contains scripts loading the count matrices and metadata to create Seurat objects. 
