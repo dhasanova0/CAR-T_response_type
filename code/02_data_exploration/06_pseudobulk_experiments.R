@@ -39,7 +39,7 @@ DE_pseudo <- function(seu_obj, group){
 }
 
 DE_RvsNR <- DE_pseudo(seu_obj, c("label", "orig.ident"))
-write.csv(DE_RvsNR, paste0(wd, "figures/baseline/analysis/pseudo_RvsNR.csv"))
+write.csv(DE_RvsNR, paste0(wd, "figures/baseline/analysis/pseudo/pseudo_RvsNR.csv"))
 
 
 EnhancedVolcano(DE_RvsNR , 
