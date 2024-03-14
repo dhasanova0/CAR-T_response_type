@@ -1,7 +1,6 @@
 #Author: Dzhansu Hasanova
 #Initial analysis of baseline samples
 
-library(tidyr)
 library(Seurat)
 library(ggplot2)
 library(dplyr)
@@ -80,7 +79,7 @@ write.csv(DE, paste0(wd, "figures/baseline/analysis/DE_RvsNR_log.csv"))
 DE <- DE[order(DE$avg_log2FC),]
 
 EnhancedVolcano(DE , 
-                rownames(DE ),
+                rownames(DE),
                 x ="avg_log2FC",
                 y ="p_val_adj",
                 #selectLab = c(rownames(DE)[1:5], rev(rownames(DE)[(nrow(DE)-3):nrow(DE)])),
