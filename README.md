@@ -31,6 +31,8 @@ get_state_function.R: Function which labels cells with states (cells already lab
 
 qc_figures.R: Function which creates various figures for quality control
 
+packages.txt: The text file contains the packages and their version used for the analyses
+
 ## Data
 Raw count matrices obtained from: [GEO accession GSE197268](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE197268)
 
